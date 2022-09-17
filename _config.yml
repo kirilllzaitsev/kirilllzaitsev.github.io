@@ -1,10 +1,9 @@
-title: "One blog on N things"
+title: "One blog about N software engineering things"
 author: "Kirill Zaitsev"
 description: "Projects and thoughts on topics in machine learning, software engineering, big data, and beyond"
 
 # Email / Social media user names used by the minima theme:
 # All of these are optional and can be removed or commented out
-email: "example@mail.com"
 linkedin_username: "kirill-zaitsev-"
 github_username: "kirilllzaitsev"
 
