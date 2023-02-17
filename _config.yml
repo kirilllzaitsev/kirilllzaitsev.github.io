@@ -1,0 +1,28 @@
+title: "One software engineering journal"
+author: "Kirill Zaitsev"
+description: "Projects and thoughts on topics in machine learning, software engineering, big data, and beyond"
+
+# Email / Social media user names used by the minima theme:
+# All of these are optional and can be removed or commented out
+linkedin_username: "kirill-zaitsev-"
+github_username: "kirilllzaitsev"
+
+#########################################################################################
+######### Nothing below needs to be changed (unless you know what you're doing) #########
+#########################################################################################
+theme: "minima"
+
+kramdown:
+  syntax_highlighter_opts:
+    disable: true
+    
+titles_from_headings:
+  strip_title: true
+  collections: true
+
+defaults:
+  - scope:
+      path: ""
+      type: post
+    values:
+      tags: Other
