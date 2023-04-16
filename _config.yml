@@ -1,16 +1,18 @@
-title: "One software engineering journal"
+title: "Kirill Zaitsev"
 author: "Kirill Zaitsev"
-description: "Projects and thoughts on topics in machine learning, software engineering, big data, and beyond"
+description: >-
+  Projects in machine learning, big data, and beyond
+baseurl: "" # the subpath of your site, e.g. /blog
+url: "" # the base hostname & protocol for your site, e.g. http://example.com
 
-# Email / Social media user names used by the minima theme:
-# All of these are optional and can be removed or commented out
 linkedin_username: "kirill-zaitsev-"
 github_username: "kirilllzaitsev"
 
-#########################################################################################
-######### Nothing below needs to be changed (unless you know what you're doing) #########
-#########################################################################################
-theme: "minima"
+markdown: kramdown
+theme: minima
+plugins:
+  - jekyll-feed
+
 
 kramdown:
   syntax_highlighter_opts:
@@ -25,4 +27,17 @@ defaults:
       path: ""
       type: post
     values:
-      tags: Other
+      tags:
+      - Other
+
+# Exclude from processing.
+# The following items will not be processed, by default. Create a custom list
+# to override the default setting.
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/
