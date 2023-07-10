@@ -1,4 +1,10 @@
-# Speed up your development routines
+---
+layout: post
+title:  "Speed up your development routines"
+# date:   2023-04-15 10:00:30 +0200
+categories: jekyll update
+---
+
 
 > If you need to do something more than twice, automate it.
 >
@@ -10,12 +16,14 @@ These practices are not limited to programming, infrastructure, or any other typ
 
 ## Table of Contents
 
-- [1. Use a clipboard manager](#practice-1)
-- [2. Use aliases](#practice-2)
-- [3. Use functions](#practice-3)
-- [4. Use scripts](#practice-4)
-- [5. Use Makefiles](#practice-5)
-- [6. Use a task runner](#practice-6)
+- [Table of Contents](#table-of-contents)
+  - [1. Use a clipboard manager ](#1-use-a-clipboard-manager-)
+  - [2. Use aliases ](#2-use-aliases-)
+  - [3. Use functions ](#3-use-functions-)
+  - [4. Use scripts ](#4-use-scripts-)
+  - [5. Use Makefiles ](#5-use-makefiles-)
+  - [6. Use Taskfiles ](#6-use-taskfiles-)
+  - [Summary](#summary)
 
 Imagine. You landed a software engineering job and at the moment in front of you there is a brand-new laptop with an NVIDIA GPU on board. Our first assignment is to install NVIDIA drivers on a fresh Ubuntu installation you have just set up. After a round of googling, we have identified CUDA capability of the GPU at hand and found the latest driver version that supports it. Having it installed, we went for a coffee only to come back and find out there is a compatibility issue between the CUDA version we installed and one of our favorite software libraries (think PyTorch). We remove every bit of the drivers we have installed and redo the procedure with a different version. No luck? Repeat, rigorously studying [available compatibility docs](https://elenacliu-pytorch-cuda-driver.streamlit.app/). Throughout the process we have typed the same commands over and over again: `sudo apt-get purge "nvidia-*"`, `sudo apt install nvidia-driver-x cuda-toolkit-x`, `sudo apt-get -y install cuda`, etc.
 
