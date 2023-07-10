@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Speed up your development routines"
+title:  "Boost your development routines with these six practices"
 # date:   2023-04-15 10:00:30 +0200
 categories: jekyll update
 ---
