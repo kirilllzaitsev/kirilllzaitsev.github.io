@@ -5,7 +5,7 @@ date:   2023-07-15 10:00:30 +0200
 categories: jekyll update
 ---
 
-When a machine learning model is trained, a question that naturally comes up is how to do better. One can try to improve the model itself by changing its architecture, adding more data, or tuning hyperparameters. But is there something that can be done about the predictions themselves, without changing the model?
+When a machine learning model is trained, a question that naturally comes up is how to do better. One can try to improve the model itself by changing its architecture, tuning hyperparameters, or sophisticating input preprocessing routines. But is there something that can be done with predictions themselves, leaving other parts of the pipeline intact? 
 
 Post-processing in general refers to a set of techniques that refine predictions obtained from the model. For example, one works on an image segmentation task, and the model predicts a mask with a lot of noise. In this case, one can use a noise threshold to get filter out values that are below it, obtaining a more accurate result. Or one needs to reformat the model's output to another format accepted by the task. In this article, I will introduce four post-processing techniques using that task of image segmentation as an example.
 
