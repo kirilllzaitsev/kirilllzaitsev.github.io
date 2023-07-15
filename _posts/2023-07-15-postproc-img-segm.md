@@ -5,7 +5,9 @@ date:   2023-07-15 10:00:30 +0200
 categories: jekyll update
 ---
 
-Post-processing comes in handy when the model can't get you directly to the desired result. For example, you want to segment the image, but the model predicts a mask with a lot of noise. In this case, you can use post-processing to get rid of the noise and get a more accurate result. Or one needs to reformat the model's output to another format accepted by the task. In this article, I will talk about post-processing techniques that I used in my projects on image segmentation.
+When a machine learning model is trained, a question that naturally comes up is how to do better. One can try to improve the model itself by changing its architecture, adding more data, or tuning hyperparameters. But is there something that can be done about the predictions themselves, without changing the model?
+
+Post-processing in general refers to a set of techniques that refine predictions obtained from the model. For example, one works on an image segmentation task, and the model predicts a mask with a lot of noise. In this case, one can use a noise threshold to get filter out values that are below it, obtaining a more accurate result. Or one needs to reformat the model's output to another format accepted by the task. In this article, I will introduce four post-processing techniques using that task of image segmentation as an example.
 
 Table of Contents:
 
@@ -23,11 +25,17 @@ Consider the problem of identifying condensation trails (contrails) from satelli
 
 One sample from the dataset looks like this:
 
-![Contrails sample](./assets/2023-07-15-postproc-img-segm.md/contrails_sample.png)
+<figure>
+<img src="./assets/2023-07-15-postproc-img-segm.md/contrails_sample.png"  style="width:100%">
+<figcaption align = "center"><b>Fig. - Contrails sample</b></figcaption>
+</figure>
 
 And with a standard prediction pipeline, we get the following result:
 
-![Contrails prediction](./assets/2023-07-15-postproc-img-segm.md/notta.png)
+<figure>
+<img src="./assets/2023-07-15-postproc-img-segm.md/notta.png" style="width:100%">
+<figcaption align = "center"><b>Fig. - Contrails prediction</b></figcaption>
+</figure>
 
 , with a score of 0.6893. Now, we apply the following transformations to the input image:
 
@@ -37,11 +45,20 @@ And with a standard prediction pipeline, we get the following result:
 
 and obtain the follow results shown in the same order:
 
-![Contrails prediction](./assets/2023-07-15-postproc-img-segm.md/hflip.png)
-![Contrails prediction](./assets/2023-07-15-postproc-img-segm.md/vflip.png)
-![Contrails prediction](./assets/2023-07-15-postproc-img-segm.md/hvflip.png)
+<figure>
+<img src="./assets/2023-07-15-postproc-img-segm.md/hflip.png" style="width:100%">
+<!-- <figcaption align = "center"><b>Fig. - Contrails prediction</b></figcaption> -->
+</figure>
+<figure>
+<img src="./assets/2023-07-15-postproc-img-segm.md/vflip.png" style="width:100%">
+<!-- <figcaption align = "center"><b>Fig. - Contrails prediction</b></figcaption> -->
+</figure>
+<figure>
+<img src="./assets/2023-07-15-postproc-img-segm.md/hvflip.png" style="width:100%">
+<figcaption align = "center"><b>Fig. 2 - From left to right: input image, predicted mask, overlay of the image and the mask. From top to bottom: horizontal flip, vertical flip, both flips.</b></figcaption>
+</figure>
 
-However, we need to find a confidence threshold. Values above the threshold are considered to be contrails.
+Just as with standard prediction, we need to find a confidence threshold. Values above the threshold are considered to be contrails.
 
 ```python
 scores= []
@@ -66,25 +83,24 @@ We iterate over a range of thresholds and choose the one that gives the best Dic
 | 0.7       | 0.7026     |
 | 0.8       | 0.5695     |
 | 0.9       | 0.5462     |
-
 And the corresponding plot:
 
 <figure>
-<img src="./assets/2023-07-15-postproc-img-segm.md/best_plot.png" style="width:100%">
-<figcaption align = "center"><b>Fig. - Contrails prediction</b></figcaption>
+<p style="text-align:center;"><img src="./assets/2023-07-15-postproc-img-segm.md/best_plot.png" style="width:50%"></p>
+<figcaption align = "center"><b>Fig. - Dice score vs threshold</b></figcaption>
 </figure>
 
 Finally, we average the results using the threshold and get the following:
 
 <figure>
 <img src="./assets/2023-07-15-postproc-img-segm.md/tta_pred.png" style="width:100%">
-<figcaption align = "center"><b>Fig. - Contrails prediction with TTA</b></figcaption>
+<figcaption align = "center"><b>Fig. - Final contrails mask with TTA</b></figcaption>
 </figure>
 
 Compared to the standard prediction, quantitatively we get 0.117 increase in Dice score: 0.8063 vs 0.6893.
 
 Runtime increases linearly with the number of transformations with additional overhead for applying each transformation.
-Using the `%%timeit` magic command in a Jupyter notebook, we get the following results:
+Using the `%%timeit` magic command in a Jupyter notebook, we get the following results for vanilla inference:
 
 ```python
 %%timeit
@@ -93,6 +109,8 @@ with torch.no_grad():
 ```
 
 `8.19 ms ± 79.9 µs per loop (mean ± std. dev. of 7 runs, 100 loops each)`
+
+And with test augmentations:
 
 ```python
 import torchvision as tv
@@ -121,7 +139,7 @@ Keep in mind that TTA can worsen the results if transformed images are out of th
 
 ## Pseudo-labeling
 
-While TTA is used at the final stage of the pipeline, pseudo-labeling is an interim step between multiple runs of the training pipeline.
+While TTA is used at the final stage of the pipeline, pseudo-labeling is an intermediate step between multiple runs of the training pipeline. This technique contrasts with others presented in this article in that it improves model's results indirectly by adding more data to the training dataset.
 The following steps describe the algorithm:
 
 1. Train the model on the labeled (train) dataset.
@@ -211,7 +229,7 @@ CRF just removed some noise around the edges of the road.
 ## Conclusion
 
 We discussed four techniques that can be used to improve the quality and integrity of the model's predictions. Although we used image
-segmentation for examples, these techniques can be applied to a wide range of perception tasks.
+segmentation for examples, these techniques can be applied to a wide range of perception tasks. The list of techniques is not exhaustive, and other methods like [morphological transformations](https://opencv24-python-tutorials.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_morphological_ops/py_morphological_ops.html) may require reader's attention.
 
 Test-time augmentation and Conditional Random Fields can be used to refine the predictions at the (final) inference stage. Pseudo-labeling allows
 to increase the size of the training dataset by iteratively picking the most confident predictions from the unlabeled dataset. Domain-specific
