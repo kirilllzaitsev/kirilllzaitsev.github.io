@@ -26,14 +26,14 @@ Consider the problem of identifying condensation trails (contrails) from satelli
 One sample from the dataset is shown on Fig. 1:
 
 <figure>
-<img src="./assets/2023-07-15-postproc-img-segm.md/contrails_sample.png"  style="width:100%">
+<img src="assets/2023-07-15-postproc-img-segm.md/contrails_sample.png"  style="width:100%">
 <figcaption align = "center"><b>Fig. 1 - Contrails sample</b></figcaption>
 </figure>
 
 With a standard inference routine, we get the following result (Fig. 2):
 
 <figure>
-<img src="./assets/2023-07-15-postproc-img-segm.md/notta.png" style="width:100%">
+<img src="assets/2023-07-15-postproc-img-segm.md/notta.png" style="width:100%">
 <figcaption align = "center"><b>Fig. 2 - Contrails prediction</b></figcaption>
 </figure>
 
@@ -46,13 +46,13 @@ With a standard inference routine, we get the following result (Fig. 2):
 and obtain predictions shown below (Fig. 3):
 
 <figure>
-<img src="./assets/2023-07-15-postproc-img-segm.md/hflip.png" style="width:100%">
+<img src="assets/2023-07-15-postproc-img-segm.md/hflip.png" style="width:100%">
 </figure>
 <figure>
-<img src="./assets/2023-07-15-postproc-img-segm.md/vflip.png" style="width:100%">
+<img src="assets/2023-07-15-postproc-img-segm.md/vflip.png" style="width:100%">
 </figure>
 <figure>
-<img src="./assets/2023-07-15-postproc-img-segm.md/hvflip.png" style="width:100%">
+<img src="assets/2023-07-15-postproc-img-segm.md/hvflip.png" style="width:100%">
 <figcaption align = "center"><b>Fig. 3 - From left to right: input image, predicted mask, overlay of the image and the mask. From top to bottom: horizontal flip, vertical flip, both flips.</b></figcaption>
 </figure>
 
@@ -85,7 +85,7 @@ We iterate over a range of thresholds and choose the one that gives the best Dic
 And the corresponding plot (Fig. 4):
 
 <figure>
-<p style="text-align:center;"><img src="./assets/2023-07-15-postproc-img-segm.md/best_plot.png" style="width:50%"></p>
+<p style="text-align:center;"><img src="assets/2023-07-15-postproc-img-segm.md/best_plot.png" style="width:50%"></p>
 <figcaption align = "center"><b>Fig. 4 - Dice score vs threshold</b></figcaption>
 </figure>
 
@@ -99,7 +99,7 @@ tta_mask = (tta_pred > best_thresh).int()
 to get the following result (Fig. 5):
 
 <figure>
-<img src="./assets/2023-07-15-postproc-img-segm.md/tta_pred.png" style="width:100%">
+<img src="assets/2023-07-15-postproc-img-segm.md/tta_pred.png" style="width:100%">
 <figcaption align = "center"><b>Fig. 5 - Final contrails mask with TTA</b></figcaption>
 </figure>
 
@@ -191,7 +191,7 @@ The architecture of the CRF network is RNN-based and originates from the [CRF-RN
 As an example, consider the task of segmenting the class 'road' from the [KITTI dataset](https://www.cvlibs.net/datasets/kitti/). A sample input and prediction from the model are shown on Fig. 6:
 
 <figure>
-<img src="./assets/2023-07-15-postproc-img-segm.md/kitti_pred.png" style="width:100%">
+<img src="assets/2023-07-15-postproc-img-segm.md/kitti_pred.png" style="width:100%">
 <figcaption align = "center"><b>Fig. 6 - KITTI prediction</b></figcaption>
 </figure>
 
