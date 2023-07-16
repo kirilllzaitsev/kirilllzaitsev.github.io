@@ -5,7 +5,7 @@ date:   2023-07-15 10:00:30 +0200
 categories: jekyll update
 ---
 
-When a machine learning model is trained, a question that naturally comes up is how to do better. One can try to improve the model itself by changing its architecture, tuning hyperparameters, or sophisticating input preprocessing routines. But is there something that can be done with predictions themselves, leaving other parts of the pipeline intact? 
+When a machine learning model is trained, a question that naturally comes up is how to do better. One can try to improve the model itself by changing its architecture, tuning hyperparameters, or sophisticating input preprocessing routines. But is there something that can be done with predictions themselves, leaving other parts of the pipeline intact?
 
 Post-processing in general refers to a set of techniques that refine predictions obtained from the model. For example, one works on an image segmentation task, and the model predicts a mask with a lot of noise. In this case, one can use a noise threshold to get filter out values that are below it, obtaining a more accurate result. Or one needs to reformat the model's output to another format accepted by the task. In this article, I will introduce four post-processing techniques using that task of image segmentation as an example.
 
@@ -23,18 +23,18 @@ TTA is a technique applied during the inference stage. It involves transforming 
 
 Consider the problem of identifying condensation trails (contrails) from satellite images. The task is to predict a binary mask of contrails which are line fragments subject to additional constraints.
 
-One sample from the dataset looks like this:
+One sample from the dataset is shown on Fig. 1:
 
 <figure>
 <img src="./assets/2023-07-15-postproc-img-segm.md/contrails_sample.png"  style="width:100%">
-<figcaption align = "center"><b>Fig. - Contrails sample</b></figcaption>
+<figcaption align = "center"><b>Fig. 1 - Contrails sample</b></figcaption>
 </figure>
 
-And with a standard prediction pipeline, we get the following result:
+With a standard inference routine, we get the following result (Fig. 2):
 
 <figure>
 <img src="./assets/2023-07-15-postproc-img-segm.md/notta.png" style="width:100%">
-<figcaption align = "center"><b>Fig. - Contrails prediction</b></figcaption>
+<figcaption align = "center"><b>Fig. 2 - Contrails prediction</b></figcaption>
 </figure>
 
 , with a score of 0.6893. Now, we apply the following transformations to the input image:
@@ -43,19 +43,17 @@ And with a standard prediction pipeline, we get the following result:
 - vertical flip
 - both flips
 
-and obtain the follow results shown in the same order:
+and obtain predictions shown below (Fig. 3):
 
 <figure>
 <img src="./assets/2023-07-15-postproc-img-segm.md/hflip.png" style="width:100%">
-<!-- <figcaption align = "center"><b>Fig. - Contrails prediction</b></figcaption> -->
 </figure>
 <figure>
 <img src="./assets/2023-07-15-postproc-img-segm.md/vflip.png" style="width:100%">
-<!-- <figcaption align = "center"><b>Fig. - Contrails prediction</b></figcaption> -->
 </figure>
 <figure>
 <img src="./assets/2023-07-15-postproc-img-segm.md/hvflip.png" style="width:100%">
-<figcaption align = "center"><b>Fig. 2 - From left to right: input image, predicted mask, overlay of the image and the mask. From top to bottom: horizontal flip, vertical flip, both flips.</b></figcaption>
+<figcaption align = "center"><b>Fig. 3 - From left to right: input image, predicted mask, overlay of the image and the mask. From top to bottom: horizontal flip, vertical flip, both flips.</b></figcaption>
 </figure>
 
 Just as with standard prediction, we need to find a confidence threshold. Values above the threshold are considered to be contrails.
@@ -83,18 +81,26 @@ We iterate over a range of thresholds and choose the one that gives the best Dic
 | 0.7       | 0.7026     |
 | 0.8       | 0.5695     |
 | 0.9       | 0.5462     |
-And the corresponding plot:
+
+And the corresponding plot (Fig. 4):
 
 <figure>
 <p style="text-align:center;"><img src="./assets/2023-07-15-postproc-img-segm.md/best_plot.png" style="width:50%"></p>
-<figcaption align = "center"><b>Fig. - Dice score vs threshold</b></figcaption>
+<figcaption align = "center"><b>Fig. 4 - Dice score vs threshold</b></figcaption>
 </figure>
 
-Finally, we average the results using the threshold and get the following:
+Finally, we average the results using the threshold:
+
+```python
+tta_pred = torch.mean(torch.stack(tta_preds), dim=0)
+tta_mask = (tta_pred > best_thresh).int()
+```
+
+to get the following result (Fig. 5):
 
 <figure>
 <img src="./assets/2023-07-15-postproc-img-segm.md/tta_pred.png" style="width:100%">
-<figcaption align = "center"><b>Fig. - Final contrails mask with TTA</b></figcaption>
+<figcaption align = "center"><b>Fig. 5 - Final contrails mask with TTA</b></figcaption>
 </figure>
 
 Compared to the standard prediction, quantitatively we get 0.117 increase in Dice score: 0.8063 vs 0.6893.
@@ -127,15 +133,20 @@ transforms = [
 
 ```python
 %%timeit
-for transform in transforms:
+tta_preds=[]
+# in case of flips, reverse transforms are the same as transforms
+reverse_transforms = transforms
+for transform, reverse_transform in zip(transforms, reverse_transforms):
     transformed_images = torch.stack([transform(image) for image in images])
     with torch.no_grad():
         predicted_mask = model(transformed_images)
+    tta_preds.append(reverse_transform(predicted_mask))
 ```
 
 `32.7 ms ± 410 µs per loop (mean ± std. dev. of 7 runs, 10 loops each)`
 
-Keep in mind that TTA can worsen the results if transformed images are out of the distribution of the training dataset.
+Keep in mind that TTA can worsen the results if transformed images are out of the distribution of the training dataset. For example,
+applying pixel intensity transformations to a dataset of medical images may lead to unrealistic samples that the model has never seen before.
 
 ## Pseudo-labeling
 
@@ -177,11 +188,11 @@ Like the TTA technique, CRF in this form is used at the inference stage.
 However, there is a way to incorporate CRF into the training pipeline. The idea is to add a CRF network to the model and train it end-to-end.
 The architecture of the CRF network is RNN-based and originates from the [CRF-RNN paper](https://github.com/torrvision/crfasrnn).
 
-As an example, consider the task of segmenting the class 'road' from the KITTI dataset. A sample input and prediction from the model are shown below:
+As an example, consider the task of segmenting the class 'road' from the [KITTI dataset](https://www.cvlibs.net/datasets/kitti/). A sample input and prediction from the model are shown on Fig. 6:
 
 <figure>
 <img src="./assets/2023-07-15-postproc-img-segm.md/kitti_pred.png" style="width:100%">
-<figcaption align = "center"><b>Fig. - KITTI prediction</b></figcaption>
+<figcaption align = "center"><b>Fig. 6 - KITTI prediction</b></figcaption>
 </figure>
 
 With a credit to [this Kaggle notebook](https://www.kaggle.com/code/meaninglesslives/apply-crf), we postprocess the prediction
@@ -216,11 +227,11 @@ Note the following parameters:
 - `compat`, label compatibilities, e.g., how bad it is to mistake one class for another
 - `inference_steps`, number of iterations of [MAP inference](https://en.wikipedia.org/wiki/Maximum_a_posteriori_estimation)
 
-After applying CRF with the parameters from above, we get the following:
+After applying CRF with the parameters from above, we get the following (Fig. 7):
 
 <figure>
 <img src="assets/2023-07-15-postproc-img-segm.md/kitti_pred_crf.png" style="width:100%">
-<figcaption align = "center"><b>Fig. - KITTI prediction with CRF. (Left) original prediction, (right) prediction refined with CRF</b></figcaption>
+<figcaption align = "center"><b>Fig. 7 - KITTI prediction with CRF. (Left) original prediction, (right) prediction refined with CRF</b></figcaption>
 </figure>
 
 Mean absolute difference between the original prediction and the prediction refined with CRF is ~370 with pixels ranging from 0 to 255. With given configuration,
