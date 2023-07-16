@@ -1,8 +1,7 @@
 ---
 layout: post
-title:  "Post-processing techniques for image segmentation"
-date:   2023-07-15 10:00:30 +0200
-categories: jekyll update
+title:  Post-processing techniques for image segmentation
+date:   2023-07-15
 ---
 
 When a machine learning model is trained, a question that naturally comes up is how to do better. One can try to improve the model itself by changing its architecture, tuning hyperparameters, or sophisticating input preprocessing routines. But is there something that can be done with predictions themselves, leaving other parts of the pipeline intact?
