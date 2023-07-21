@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Tech talk: On-premise analytics enhanced by MLops
+title:  Tech talk. On-premise analytics enhanced by MLops
 date:   2022-10-23
 ---
 
