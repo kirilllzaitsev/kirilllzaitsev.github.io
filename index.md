@@ -11,4 +11,4 @@ I'm Kirill Zaitsev, a CS Master's student and a software engineer with a backgro
 
 You can find more information about my professional background on my [Linkedin page](https://www.linkedin.com/in/kirill-zaitsev-/). Also, I would love to have a discussion or hear your feedback via Linkedin.
 
-Prior to launching this blog, I created a series of articles on Medium. Follow [this link]((https://medium.com/codex/building-a-data-engineering-project-part-1-from-idea-to-design-67f398148a52)) to read more.
+Prior to launching this blog, I wrote a series of articles on Medium. Follow [this link]((https://medium.com/codex/building-a-data-engineering-project-part-1-from-idea-to-design-67f398148a52)) to read more.
