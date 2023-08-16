@@ -14,6 +14,7 @@ Table of Contents:
 - [Pseudo-labeling](#pseudo-labeling)
 - [Domain-specific post-processing](#domain-specific-post-processing)
 - [Conditional random fields (CRF)](#conditional-random-fields-crf)
+- [Morphological transformations](#morphological-transformations)
 - [Conclusion](#conclusion)
 
 ## Test-time augmentation (TTA)
@@ -233,16 +234,33 @@ After applying CRF with the parameters from above, we get the following (Fig. 7)
 <figcaption align = "center"><b>Fig. 7 - KITTI prediction with CRF. (Left) original prediction, (right) prediction refined with CRF</b></figcaption>
 </figure>
 
-Mean absolute difference between the original prediction and the prediction refined with CRF is ~370 with pixels ranging from 0 to 255. With given configuration,
-CRF just removed some noise around the edges of the road.
+Mean absolute difference between the original prediction and the prediction refined with CRF is ~370 with pixels ranging from 0 to 255. In the current configuration, CRF just removed some noise around the edges of the road.
+
+## Morphological transformations
+
+Much cheaper in terms of runtime than CRF, our final class of refinement methods is morphological transformations. Applied mostly to binary images, these transformations can be used to remove noise, fill holes, manipulate object thickness, and more. A nice illustration of the popular transformations can be found [here](https://opencv24-python-tutorials.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_morphological_ops/py_morphological_ops.html). Continuing with the task of contrail segmentation, let's take a look at just two of them - Opening and Closing - and see how they affect the prediction.
+
+Opening is erosion followed by dilation. Removal of noise from a binary mask is a standard use case for this transformation.
+
+<figure>
+<img src="/assets/2023-07-15-postproc-img-segm.md/images/kitti_pred_opening.png" style="width:100%">
+<figcaption align = "center"><b>Fig. 8 - KITTI prediction with Opening. (Left) original prediction, (right) prediction refined with Opening transformation</b></figcaption>
+</figure>
+
+Closing is dilation followed by erosion. Compared to Opening, it is better at filling holes within the object.
+
+<figure>
+<img src="/assets/2023-07-15-postproc-img-segm.md/images/kitti_pred_closing.png" style="width:100%">
+<figcaption align = "center"><b>Fig. 9 - KITTI prediction with Closing. (Left) original prediction, (right) prediction refined with Closing transformation</b></figcaption>
+</figure>
 
 ## Conclusion
 
 We discussed four techniques that can be used to improve the quality and integrity of the model's predictions. Although we used image
-segmentation for examples, these techniques can be applied to a wide range of perception tasks. The list of techniques is not exhaustive, and other methods like [morphological transformations](https://opencv24-python-tutorials.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_morphological_ops/py_morphological_ops.html) may require reader's attention.
+segmentation for examples, these techniques can be applied to a wide range of perception tasks.
 
 Test-time augmentation and Conditional Random Fields can be used to refine the predictions at the (final) inference stage. Pseudo-labeling allows
 to increase the size of the training dataset by iteratively picking the most confident predictions from the unlabeled dataset. Domain-specific
-post-processing can discard predictions that do not meet properties of the modeled object.
+post-processing can discard predictions that do not meet properties of the modeled object. Morphological transformations are cheap yet effective at dealing with noise and holes in binary masks.
 
 However, the success with using the aforementioned techniques comes with a careful selection of hyperparameters and a lot of experimentation.
