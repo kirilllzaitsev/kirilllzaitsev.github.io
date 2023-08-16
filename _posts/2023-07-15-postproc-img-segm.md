@@ -242,14 +242,14 @@ Much cheaper than CRF in terms of computational costs, our final class of refine
 
 To understand how they work, we first need to get familiar with the two foundational operations - erosion and dilation. Erosion slides a kernel of ones over the binary image and sets the pixel to 1 only if **all the pixels** under the kernel are ones. Dilation, on the other hand, sets the pixel to 1 if **at least one pixel** under the kernel is 1. And now coming back to Opening and Closing.
 
-Opening is erosion followed by dilation. Removal of noise from a binary mask is a standard use case for this transformation.
+Opening is erosion followed by dilation. Removal of noise that is external to objects on a binary mask is a standard use case for this transformation.
 
 <figure>
 <img src="/assets/2023-07-15-postproc-img-segm.md/images/kitti_pred_opening.png" style="width:100%">
 <figcaption align = "center"><b>Fig. 8 - KITTI prediction with Opening. (Left) original prediction, (right) prediction refined with Opening transformation</b></figcaption>
 </figure>
 
-Closing is dilation followed by erosion. Compared to Opening, it is better at filling holes within the object.
+Closing is dilation followed by erosion. Unlike to Opening, we apply Closing to brush up the internal structure of objects on the mask.
 
 <figure>
 <img src="/assets/2023-07-15-postproc-img-segm.md/images/kitti_pred_closing.png" style="width:100%">
