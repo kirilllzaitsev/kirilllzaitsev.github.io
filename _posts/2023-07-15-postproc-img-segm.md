@@ -238,7 +238,9 @@ Mean absolute difference between the original prediction and the prediction refi
 
 ## Morphological transformations
 
-Much cheaper in terms of runtime than CRF, our final class of refinement methods is morphological transformations. Applied mostly to binary images, these transformations can be used to remove noise, fill holes, manipulate object thickness, and more. A nice illustration of the popular transformations can be found [here](https://opencv24-python-tutorials.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_morphological_ops/py_morphological_ops.html). Continuing with the task of contrail segmentation, let's take a look at just two of them - Opening and Closing - and see how they affect the prediction.
+Much cheaper than CRF in terms of computational costs, our final class of refinement methods is morphological transformations. Applied mostly to binary images, these transformations can be used to remove noise, fill holes, manipulate object thickness, and more. A nice illustration of the popular transformations can be found [here](https://opencv24-python-tutorials.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_morphological_ops/py_morphological_ops.html). Continuing with the task of contrail segmentation, let's take a look at just two of them - Opening and Closing - and see how they affect the prediction.
+
+To understand how they work, we first need to get familiar with the two foundational operations - erosion and dilation. Erosion slides a kernel of ones over the binary image and sets the pixel to 1 only if **all the pixels** under the kernel are ones. Dilation, on the other hand, sets the pixel to 1 if **at least one pixel** under the kernel is 1. And now coming back to Opening and Closing.
 
 Opening is erosion followed by dilation. Removal of noise from a binary mask is a standard use case for this transformation.
 
@@ -253,6 +255,20 @@ Closing is dilation followed by erosion. Compared to Opening, it is better at fi
 <img src="/assets/2023-07-15-postproc-img-segm.md/images/kitti_pred_closing.png" style="width:100%">
 <figcaption align = "center"><b>Fig. 9 - KITTI prediction with Closing. (Left) original prediction, (right) prediction refined with Closing transformation</b></figcaption>
 </figure>
+
+Having a binary mask at hand, it is quite simple to use morphological transformations with OpenCV:
+
+```python
+kernel_size_opening = 5
+kernel_opening = np.ones((kernel_size_opening, kernel_size_opening), np.uint8)
+opening = cv2.morphologyEx(binary_mask, cv2.MORPH_OPEN, kernel)
+
+kernel_size_closing = 7
+kernel_closing = np.ones((kernel_closing, kernel_closing), np.uint8)
+closing = cv2.morphologyEx(binary_mask, cv2.MORPH_CLOSE, kernel)
+```
+
+Kernel size is a hyperparameter that needs to be tuned, and, though kernel_size=5 is a good starting point, additional experiments are worth running.
 
 ## Conclusion
 
