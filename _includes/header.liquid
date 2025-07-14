@@ -59,7 +59,7 @@
           <!-- Other pages -->
           {% assign sorted_pages = site.pages | sort: 'nav_order' %}
           {% for p in sorted_pages %}
-            {% if p.title != 'about' and p.title != 'projects' %}
+            {% if p.title != 'about' and p.title != 'about' %}
               {% continue %}
             {% endif %}
             {% if p.nav and p.autogen == null %}
