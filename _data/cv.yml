@@ -26,10 +26,10 @@
       institution: ETH Zurich
       year: 03/2023 - now
       description:
-        - research in monocular multi-object 6D pose tracking for in-hand manipulation (RSL)
-        - development of a point cloud reconstruction pipeline for earthwork missions (RSL)
-        - research in self-supervised diffusion-based depth estimation from camera & LiDAR (RSL)
-        - research in monocular depth estimation with geometrical priors (CVG)
+        - research in monocular multi-object 6D pose tracking for in-hand manipulation (RSL lab)
+        - development of a point cloud reconstruction pipeline for earthwork missions (RSL lab)
+        - research in self-supervised diffusion-based depth estimation from camera & LiDAR (RSL lab)
+        - research in monocular depth estimation with geometrical priors (CVG lab)
     - title: Software Engineer (80%)
       institution: Eraneos Switzerland
       year: 08/2023 - now
