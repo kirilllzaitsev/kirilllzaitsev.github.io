@@ -36,6 +36,32 @@ layout: default
 
     <div class="clearfix">{{ content }}</div>
 
+{% assign experience = site.data.cv | where: "title", "Experience" | first %}
+{% if experience %}
+  <h2>Work Experience</h2>
+  <ul class="list-unstyled pl-0">
+    {% for job in experience.contents %}
+      <li class="mb-3">
+        <div class="row">
+          <div class="col-md-3 font-weight-bold" style="white-space:nowrap; text-align:left;">{{ job.year }}</div>
+          <div class="col-md-9" style="text-align:left;">
+            <div><strong>{{ job.title }}</strong>{% if job.institution %}, {{ job.institution }}{% endif %}</div>
+            {% if job.description %}
+              <div style="font-size:0.97em;">
+                <ul>
+                  {% for desc in job.description %}
+                    <li>{{ desc }}</li>
+                  {% endfor %}
+                </ul>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </li>
+    {% endfor %}
+  </ul>
+{% endif %}
+
     <!-- News -->
     {% if page.announcements and page.announcements.enabled %}
       <h2>
