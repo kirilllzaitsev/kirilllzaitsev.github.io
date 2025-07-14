@@ -1,34 +1,37 @@
-<div class="col mb-4">
-  <a href="{% if project.redirect %}{{ project.redirect }}{% else %}{{ project.url | relative_url }}{% endif %}">
-    <div class="card h-100 hoverable">
-      <div class="row no-gutters">
-        {% if project.img %}
-          <div class="col-md-6">
-            {% include figure.liquid loading="eager" path=project.img sizes="(min-width: 768px) 156px, 50vw" alt="project thumbnail" class="card-img" %}
+<div class="row align-items-center mb-4" style="min-height: 160px;">
+  {% if project.img %}
+    <div class="col-md-3 text-center">
+      {% include figure.liquid loading="eager" path=project.img sizes="(min-width: 140px) 140px, 40vw" alt="project thumbnail" class="img-fluid rounded" style="max-width:140px;max-height:110px;" %}
+    </div>
+  {% endif %}
+  <div class="{% if project.img %}col-md-9{% else %}col-12{% endif %}">
+    <a href="{% if project.redirect %}{{ project.redirect }}{% else %}{{ project.url | relative_url }}{% endif %}" style="text-decoration:none;">
+      <div class="pl-2 pr-2">
+        <h3 class="card-title mb-2" style="font-size:1.2em;">{{ project.title }}</h3>
+        <p class="card-text mb-2" style="font-size:0.97em;">{{ project.description }}</p>
+        {% if project.topics %}
+          <div class="mb-2">
+            {% for topic in project.topics %}
+              <span class="badge badge-secondary mr-1" style="font-size:0.85em;">{{ topic }}</span>
+            {% endfor %}
           </div>
         {% endif %}
-        <div class="{% if project.img %}col-md-6{% else %}col-md-12{% endif %}">
-          <div class="card-body">
-            <h3 class="card-title">{{ project.title }}</h3>
-            <p class="card-text">{{ project.description }}</p>
-            <div class="row ml-1 mr-1 p-0">
-              {% if project.github %}
-                <div class="github-icon">
-                  <div class="icon" data-toggle="tooltip" title="Code Repository">
-                    <a href="{{ project.github }}"><i class="fa-brands fa-github gh-icon"></i></a>
-                  </div>
-                  {% if project.github_stars %}
-                    <span class="stars" data-toggle="tooltip" title="GitHub Stars">
-                      <i class="fa-solid fa-star"></i>
-                      <span id="{{ project.github_stars }}-stars"></span>
-                    </span>
-                  {% endif %}
-                </div>
+        <div class="row ml-1 mr-1 p-0">
+          {% if project.github %}
+            <div class="github-icon">
+              <div class="icon" data-toggle="tooltip" title="Code Repository">
+                <a href="{{ project.github }}"><i class="fa-brands fa-github gh-icon"></i></a>
+              </div>
+              {% if project.github_stars %}
+                <span class="stars" data-toggle="tooltip" title="GitHub Stars">
+                  <i class="fa-solid fa-star"></i>
+                  <span id="{{ project.github_stars }}-stars"></span>
+                </span>
               {% endif %}
             </div>
-          </div>
+          {% endif %}
         </div>
       </div>
-    </div>
-  </a>
+    </a>
+  </div>
 </div>
