@@ -191,25 +191,25 @@ exclude:
   - README.md
   - readme_preview/
   - vendor
-  # - _news/
-  # - _posts/
-  # - _bibliography/
-  # - _pages/
-  # - _projects/
-  # - _includes/latest_posts.liquid
-  # - _includes/news.liquid
-  # - _includes/selected_papers.liquid
-  # - _includes/projects_horizontal.liquid
-  # - _includes/related_posts.liquid
-  # - _includes/bib_search.liquid
-  # - _includes/citation.liquid
-  # - _includes/repository/
-  # - _layouts/archive.liquid
-  # - _layouts/bib.liquid
-  # - _plugins/external-posts.rb
-  # - _plugins/google-scholar-citations.rb
-  # - _plugins/hide-custom-bibtex.rb
-  # - _plugins/inspirehep-citations.rb
+  - _news/
+  - _posts/
+  - _bibliography/
+  - _pages/
+  - _projects/
+  - _includes/latest_posts.liquid
+  - _includes/news.liquid
+  - _includes/selected_papers.liquid
+  - _includes/projects_horizontal.liquid
+  - _includes/related_posts.liquid
+  - _includes/bib_search.liquid
+  - _includes/citation.liquid
+  - _includes/repository/
+  - _layouts/archive.liquid
+  - _layouts/bib.liquid
+  - _plugins/external-posts.rb
+  - _plugins/google-scholar-citations.rb
+  - _plugins/hide-custom-bibtex.rb
+  - _plugins/inspirehep-citations.rb
 keep_files:
   - CNAME
   - .nojekyll
