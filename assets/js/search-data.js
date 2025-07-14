@@ -25,7 +25,7 @@ ninja.data = [{
           },
         },{id: "nav-projects",
           title: "projects",
-          description: "A growing collection of your cool projects.",
+          description: "A mix of research-oriented and personal projects.",
           section: "Navigation",
           handler: () => {
             window.location.href = "/projects/";
@@ -94,14 +94,24 @@ ninja.data = [{
               window.location.href = "/books/the_godfather/";
             },},{id: "projects-multi-object-6d-pose-tracking-with-confidence-estimation",
           title: 'Multi-Object 6D Pose Tracking With Confidence Estimation',
-          description: "tracking of 6D pose of multiple objects with confidence estimation",
+          description: "Tracking the 6D pose of multiple objects with confidence estimation",
           section: "Projects",handler: () => {
               window.location.href = "/projects/1_project/";
             },},{id: "projects-multi-task-learning-in-urban-environments",
           title: 'Multi-task Learning in Urban Environments',
-          description: "jointly solving monocular depth estimation and semantic segmentation",
+          description: "Jointly solving monocular depth estimation and semantic segmentation tasks",
           section: "Projects",handler: () => {
               window.location.href = "/projects/2_project/";
+            },},{id: "projects-point-cloud-reconstruction-for-autonomous-earthworks",
+          title: 'Point Cloud Reconstruction for Autonomous Earthworks',
+          description: "Completion of partial LiDAR scans from in-the-wild terrains",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/3_project/";
+            },},{id: "projects-monocular-depth-estimation-with-geometrical-priors",
+          title: 'Monocular Depth Estimation With Geometrical Priors',
+          description: "Improve monocular depth estimation with geometrical cues",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/4_project/";
             },},{
         id: 'social-email',
         title: 'email',
