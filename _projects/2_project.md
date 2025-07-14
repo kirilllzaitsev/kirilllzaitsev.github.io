@@ -1,11 +1,12 @@
 ---
 layout: page
 title: Multi-task Learning in Urban Environments
-description: jointly solving monocular depth estimation and semantic segmentation
+description: Jointly solving monocular depth estimation and semantic segmentation tasks
 img: assets/img/projects/2_intro.jpg
-importance: 1
+importance: 2
 category: all
 related_publications: true
+github: https://github.com/kirilllzaitsev/vision_mtl
 ---
 
 The goal is to understand how several paradigms of multi-task learning work by implementing and analyzing their results.
