@@ -194,8 +194,6 @@ exclude:
   - _news/
   - _posts/
   - _bibliography/
-  - _pages/
-  - _projects/
   - _includes/latest_posts.liquid
   - _includes/news.liquid
   - _includes/selected_papers.liquid
